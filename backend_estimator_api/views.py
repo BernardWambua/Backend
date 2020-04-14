@@ -5,7 +5,7 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from backend_estimator_api.serializers import LogSerializer
-from backend_estimator_api.models import Log
+from backend_estimator_api.models import Log as LogModel
 from dicttoxml import dicttoxml
 from backend_estimator_api.estimator import estimator
 
@@ -61,15 +61,15 @@ class Log(APIView):
     def get(self, request):
         start = datetime.datetime.now()
         log = {
-            'endpoint': self.request.META['PATH_INFO'],
-            'method': self.request.META['REQUEST_METHOD'],
+            'request_path': self.request.META['PATH_INFO'],
+            'http_method': self.request.META['REQUEST_METHOD'],
         }
-        logs = Log.objects.all()
+        logs = LogModel.objects.all()
         serializer = LogSerializer(logs, many=True)
         end = datetime.datetime.now()
-        log['status'] = '200'
-        log['response_time'] = f"{str(get_time_diff(start, end))} ms"
+        log['request_status'] = '200'
+        log['request_status'] = f"{str(get_time_diff(start, end))} ms"
         self._save_log(log)
-        res = [f"{res['method']}    {res['endpoint']}   {res['status']}     {res['response_time']}"
+        res = [f"{res['http_method']}    {res['request_path']}   {res['request_status']}     {res['request_status']}"
                for res in serializer.data]
         return Response(res, status=status.HTTP_200_OK)

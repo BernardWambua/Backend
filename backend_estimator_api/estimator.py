@@ -35,10 +35,10 @@ def estimator(data):
     severe_cases_for_ventilators_by_requested_time = math.trunc(
         0.02 * severe_infections_by_requested_time)
 
-    dollars_in_flight = math.trunc((infections_by_requested_time * data["region"]["avgDailyIncomePopulation"]) *
-                                   data["region"]["avgDailyIncomeInUSD"] * time_to_elapse)
-    severe_dollars_in_flight = math.trunc((severe_infections_by_requested_time *
-                                           data["region"]["avgDailyIncomePopulation"]) * data["region"]["avgDailyIncomeInUSD"] * time_to_elapse)
+    dollars_in_flight = math.trunc(((infections_by_requested_time * data["region"]["avgDailyIncomePopulation"]) *
+                                    data["region"]["avgDailyIncomeInUSD"]) / time_to_elapse)
+    severe_dollars_in_flight = math.trunc(((severe_infections_by_requested_time *
+                                            data["region"]["avgDailyIncomePopulation"]) * data["region"]["avgDailyIncomeInUSD"]) / time_to_elapse)
 
     return {
         "data": data,
